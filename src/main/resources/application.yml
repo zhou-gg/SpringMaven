@@ -1,0 +1,36 @@
+spring:
+  profiles:
+    active: @activatedProperties@
+
+  servlet:
+    multipart:
+      enabled: true
+      #单个文件的最大上限
+      max-file-size: 20MB
+      #单个请求的文件总大小上限
+      max-request-size: 30MB
+
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath:/org/system/mapper/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.crusade.ej.model
+  global-config:
+    # 数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: AUTO
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    # 控制台打印SQL
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+server:
+  servlet:
+    context-path: /ej-api
+  # tomcat参数配置
+  tomcat:
+    #最大阻塞队列大小
+    accept-count: 500

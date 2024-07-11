@@ -1,0 +1,19 @@
+spring:
+  #数据源配置
+  datasource:
+    # 数据库连接URL
+    url: jdbc:mysql://47.92.236.83:3306/erjia_0627?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: lt_dev
+    password: 123qwe!@#
+  #redis 配置
+  redis:
+    host: 47.92.236.83
+    port: 26379
+    password: 7s=p#]f6.deX
+    database: 5
+
+server:
+  # 端口
+  port: 8886
+

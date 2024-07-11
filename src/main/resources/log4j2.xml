@@ -1,0 +1,59 @@
+<configuration status="info" monitorInterval="60">
+    <Properties>
+        <!--log file path-->
+        <Property name="LOG_PATH">./logs/</Property>
+        <!--log file name-->
+        <Property name="APP_NAME">api</Property>
+        <!--log file pattern-->
+        <Property name="PATTERN_LAYOUT">%d [%X{traceId}] [%t] %-5level %c{1.}.%M:%L - %msg%n</Property>
+        <!--日志文件最大容量，超过最大容量后日志文件分割-->
+        <Property name="MAX_FILE_SIZE">100MB</Property>
+        <!--分割日志的最大次数-->
+        <Property name="I_MAX">40</Property>
+    </Properties>
+
+    <!-- 定义所有的appender -->
+    <!-- <GdogLog4j2Filter /> -->
+    <appenders>
+        <!-- 这个输出控制台的配置 -->
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- 输出日志的格式 -->
+            <PatternLayout pattern="${PATTERN_LAYOUT}"/>
+        </Console>
+
+        <!-- ERROR 日志 -->
+        <RollingFile name="ERROR-FILE" fileName="${LOG_PATH}/${APP_NAME}_error.log"
+          filePattern="${LOG_PATH}/$${date:yyyy-MM}/${APP_NAME}_error_%d{yyyy-MM-dd}_%i.log">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${PATTERN_LAYOUT}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <SizeBasedTriggeringPolicy size="${MAX_FILE_SIZE}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${I_MAX}"/>
+        </RollingFile>
+
+        <!-- log 日志 -->
+        <RollingFile name="LOG-FILE" fileName="${LOG_PATH}/${APP_NAME}_info.log"
+          filePattern="${LOG_PATH}/$${date:yyyy-MM}/${APP_NAME}_info_%d{yyyy-MM-dd}_%i.log">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${PATTERN_LAYOUT}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <SizeBasedTriggeringPolicy size="${MAX_FILE_SIZE}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${I_MAX}"/>
+        </RollingFile>
+    </appenders>
+
+    <loggers>
+        <Root level="INFO" includeLocation="true" additivity="false">
+            <!--控制台日志-->
+            <appender-ref ref="CONSOLE"/>
+            <!--生产环境日志-->
+            <appender-ref ref="LOG-FILE"/>
+            <appender-ref ref="ERROR-FILE"/>
+        </Root>
+    </loggers>
+</configuration>
